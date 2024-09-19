@@ -5,6 +5,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import csv
 
 # Ask users how many times they want to click on the load more button.
 # Convert the result of input() to an integer
@@ -61,7 +62,25 @@ for product in all_products:
   list_of_products.append(single_product)
 
 print(f'You fetched {len(list_of_products)} products from the page')
-print(list_of_products)
+# print(list_of_products)
+
+# Export the extracted list to a CSV file.
+# Specify the name of the csv file to write into.
+filename = 'products.csv' 
+
+# Open the csv file in write mode
+with open(filename, 'w', newline='') as file:
+  
+  # Create a DictWriter object to write a dictionary to a CSV file.
+  writer = csv.DictWriter(file, fieldnames=list_of_products[0].keys())
+
+  # Write the column names for the csv file.
+  writer.writeheader()
+
+  # Write the dictionaries as rows in the csv file.
+  writer.writerows(list_of_products)
+
+print(f'The list has been written to {filename}')
 
 # Close the browser and end the WebDriver session
 driver.quit()
